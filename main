@@ -1,0 +1,117 @@
+import pygame
+import random
+from pygame import (
+    K_ESCAPE,
+    KEYDOWN,
+    QUIT
+)
+
+
+def ToString(s):
+    str1 = ""
+    for ele in s:
+        str1 += ele
+    return str1
+
+
+#Criando o banco de dados do jogo
+categories = ['Animais', 'Países']
+words = [['papagaio', 'foca'],
+         ['brasil', 'china', 'russia']]
+
+#Selecionando a palavra
+CatNumber = random.randint(0, len(categories)-1)
+CatPicked = categories[CatNumber]
+WordNumber = random.randint(0, len(words[CatNumber])-1)
+WordPicked = words[CatNumber][WordNumber]
+
+
+pygame.init()
+
+#Criando as variáveis do pygame
+width = 800
+height = 600
+
+#Fontes de texto e tela
+font0 = pygame.font.SysFont('arial', 80, True, False)
+font1 = pygame.font.SysFont('arial', 30, True, False)
+font2 = pygame.font.SysFont('arial', 60, True, False)
+font3 = pygame.font.SysFont('calibri', 90, False, False)
+screen = pygame.display.set_mode((width, height))
+
+#Textos mostrados
+HiddenWord = font0.render('_ ' * len(WordPicked), True, (0, 0, 0))
+Instruction1 = font1.render('Choose a letter', True, (0, 0, 0))
+Title = font2.render('HANGMAN GAME', True, (255, 0, 0))
+LoseText = font1.render('', True, (0, 0, 0))
+
+Head = ''
+Body = ''
+RightArm = ''
+LeftArm = ''
+RightLeg = ''
+LeftLeg = ''
+HeadText = font3.render(Head, True, (0, 0, 0))
+BodyText = font3.render(Body, True, (0, 0, 0))
+RightArmText = font3.render(RightArm, True, (0, 0, 0))
+LeftArmText = font3.render(LeftArm, True, (0, 0, 0))
+RightLegText = font3.render(RightLeg, True, (0, 0, 0))
+LeftLegText = font3.render(LeftLeg, True, (0, 0, 0))
+
+Clock = pygame.time.Clock()
+mainlist = []
+guesses = []
+counter = 0
+active = True
+while active:
+    Clock.tick(30)
+    screen.fill((255, 255, 255))
+    pygame.draw.line(screen, (0, 0, 0), (100, 500), (100, 100)) #Criando a forca
+    pygame.draw.line(screen, (0, 0, 0), (100, 100), (300, 100))
+    pygame.draw.line(screen, (0, 0, 0), (300, 100), (300, 200))
+    for event in pygame.event.get():
+        if event.type == KEYDOWN:
+            if event.key == K_ESCAPE:
+                active = False
+            else:
+                letter = pygame.key.name(event.key)
+                guesses.append(letter)
+                if (ToString(mainlist).isalnum() is False) or (counter == 5 is False):
+                    if letter in WordPicked:
+                        for c in WordPicked:
+                            if letter == c:
+                                mainlist.append(letter)
+                            elif c in guesses:
+                                mainlist.append(c)
+                            else:
+                                mainlist.append('_ ')
+                        HiddenWord = font0.render(ToString(mainlist).capitalize(), True, (0, 0, 0))
+                        mainlist.clear()
+                    else:
+                        if counter == 0:
+                            HeadText = font3.render('o', True, (0, 0, 0))
+                        elif counter == 1:
+                            BodyText = font3.render('|', True, (0, 0, 0))
+                        elif counter == 2:
+                            LeftArmText = font3.render('_', True, (0, 0, 0))
+                        elif counter == 3:
+                            RightArmText = font3.render('_', True, (0, 0, 0))
+                        elif counter == 4:
+                            LeftLegText = font3.render('/', True, (0, 0, 0))
+                        elif counter == 5:
+                            RightLegText = font3.render('\\', True, (0, 0, 0))
+                            LoseText = font1.render('You lost :(', True, (0, 0, 0))
+                        counter += 1
+        elif event.type == QUIT:
+            active = False
+    screen.blit(HiddenWord, (150, 430))
+    screen.blit(Instruction1, (400, 150))
+    screen.blit(Title, (100, 10))
+    screen.blit(HeadText, (278, 176))
+    screen.blit(BodyText, (279, 240))
+    screen.blit(LeftArmText, (255, 180))
+    screen.blit(RightArmText, (290, 180))
+    screen.blit(LeftLegText, (269, 318))
+    screen.blit(RightLegText, (297, 318))
+    screen.blit(LoseText, (400,300))
+    pygame.display.update()
