@@ -31,6 +31,9 @@ pygame.init()
 #Criando as variáveis do pygame
 width = 800
 height = 600
+Black = (0, 0, 0)
+White = (255, 255, 255)
+Red = (255, 0, 0)
 
 #Fontes de texto e tela
 font0 = pygame.font.SysFont('arial', 80, True, False)
@@ -40,10 +43,10 @@ font3 = pygame.font.SysFont('calibri', 90, False, False)
 screen = pygame.display.set_mode((width, height))
 
 #Textos mostrados
-HiddenWord = font0.render('_ ' * len(WordPicked), True, (0, 0, 0))
-Instruction1 = font1.render('Choose a letter', True, (0, 0, 0))
-Title = font2.render('HANGMAN GAME', True, (255, 0, 0))
-LoseText = font1.render('', True, (0, 0, 0))
+HiddenWord = font0.render('_ ' * len(WordPicked), True, Black)
+Instruction1 = font1.render('Choose a letter', True, Black)
+Title = font2.render('HANGMAN GAME', True, Red)
+LoseText = font1.render('', True, Black)
 
 Head = ''
 Body = ''
@@ -51,12 +54,12 @@ RightArm = ''
 LeftArm = ''
 RightLeg = ''
 LeftLeg = ''
-HeadText = font3.render(Head, True, (0, 0, 0))
-BodyText = font3.render(Body, True, (0, 0, 0))
-RightArmText = font3.render(RightArm, True, (0, 0, 0))
-LeftArmText = font3.render(LeftArm, True, (0, 0, 0))
-RightLegText = font3.render(RightLeg, True, (0, 0, 0))
-LeftLegText = font3.render(LeftLeg, True, (0, 0, 0))
+HeadText = font3.render(Head, True, Black)
+BodyText = font3.render(Body, True, Black)
+RightArmText = font3.render(RightArm, True, Black)
+LeftArmText = font3.render(LeftArm, True, Black)
+RightLegText = font3.render(RightLeg, True, Black)
+LeftLegText = font3.render(LeftLeg, True, Black)
 
 Clock = pygame.time.Clock()
 mainlist = []
@@ -66,9 +69,9 @@ active = True
 while active:
     Clock.tick(30)
     screen.fill((255, 255, 255))
-    pygame.draw.line(screen, (0, 0, 0), (100, 500), (100, 100)) #Criando a forca
-    pygame.draw.line(screen, (0, 0, 0), (100, 100), (300, 100))
-    pygame.draw.line(screen, (0, 0, 0), (300, 100), (300, 200))
+    pygame.draw.line(screen, Black, (100, 500), (100, 100)) #Criando a forca
+    pygame.draw.line(screen, Black, (100, 100), (300, 100))
+    pygame.draw.line(screen, Black, (300, 100), (300, 200))
     for event in pygame.event.get():
         if event.type == KEYDOWN:
             if event.key == K_ESCAPE:
@@ -76,7 +79,7 @@ while active:
             else:
                 letter = pygame.key.name(event.key)
                 guesses.append(letter)
-                if (ToString(mainlist).isalnum() is False) or (counter == 5 is False):
+                if (ToString(mainlist).isalnum() is False) or (counter == 5) == False:
                     if letter in WordPicked:
                         for c in WordPicked:
                             if letter == c:
@@ -89,18 +92,18 @@ while active:
                         mainlist.clear()
                     else:
                         if counter == 0:
-                            HeadText = font3.render('o', True, (0, 0, 0))
+                            HeadText = font3.render('o', True, Black)
                         elif counter == 1:
-                            BodyText = font3.render('|', True, (0, 0, 0))
+                            BodyText = font3.render('|', True, Black)
                         elif counter == 2:
-                            LeftArmText = font3.render('_', True, (0, 0, 0))
+                            LeftArmText = font3.render('_', True, Black)
                         elif counter == 3:
-                            RightArmText = font3.render('_', True, (0, 0, 0))
+                            RightArmText = font3.render('_', True, Black)
                         elif counter == 4:
-                            LeftLegText = font3.render('/', True, (0, 0, 0))
+                            LeftLegText = font3.render('/', True, Black)
                         elif counter == 5:
-                            RightLegText = font3.render('\\', True, (0, 0, 0))
-                            LoseText = font1.render('You lost :(', True, (0, 0, 0))
+                            RightLegText = font3.render('\\', True, Black)
+                            LoseText = font1.render('You lost :(', True, Black)
                         counter += 1
         elif event.type == QUIT:
             active = False
